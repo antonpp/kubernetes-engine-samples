@@ -139,7 +139,7 @@ class MultiModelDeployment:
 
         return Response(content=response)
 
-multi_model = MultiModelDeployment.options(ray_actor_options={"num_gpus": 1}).bind({
+multi_model = MultiModelDeployment.bind({
     "foo": VLLMDeployment.options(ray_actor_options={"num_cpus": 8}).bind(
         model="google/gemma-2b-it",
         tensor_parallel_size=1,
