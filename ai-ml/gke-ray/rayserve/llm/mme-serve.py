@@ -139,14 +139,14 @@ class MultiModelDeployment:
         return Response(content=response)
 
 multi_model = MultiModelDeployment.bind({
-    "foo": VLLMDeployment.options(ray_actor_options={"num_cpus": 8, "num_gpus": 0.4}).bind(
+    "foo": VLLMDeployment.options(ray_actor_options={"num_cpus": 8, "num_gpus": 0.40}).bind(
         model="google/gemma-2b-it",
         tensor_parallel_size=1,
-        gpu_memory_utilization=0.33
+        gpu_memory_utilization=0.40
     ),
-    "bar": VLLMDeployment.options(ray_actor_options={"num_cpus": 8, "num_gpus": 0.4}).bind(
+    "bar": VLLMDeployment.options(ray_actor_options={"num_cpus": 8, "num_gpus": 0.40}).bind(
         model="google/gemma-2b-it",
         tensor_parallel_size=1,
-        gpu_memory_utilization=0.33
+        gpu_memory_utilization=0.40
     ),
 })
