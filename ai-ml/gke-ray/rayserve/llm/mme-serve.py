@@ -84,7 +84,7 @@ class VLLMDeployment:
     async def may_abort_request(self, request_id) -> None:
         await self.engine.abort(request_id)
 
-    async def __call__(self, request: Request) -> Response:
+    async def __call__(self, request_dict: dict) -> str:
         """Generate completion for the request.
 
         The request should be a JSON object with the following fields:
@@ -92,7 +92,7 @@ class VLLMDeployment:
         - stream: whether to stream the results or not.
         - other fields: the sampling parameters (See `SamplingParams` for details).
         """
-        request_dict = await request.json()
+        # request_dict = await request.json()
         prompt = request_dict.pop("prompt")
         stream = request_dict.pop("stream", False)
         sampling_params = SamplingParams(**request_dict)
@@ -108,13 +108,8 @@ class VLLMDeployment:
                 self.stream_results(results_generator), background=background_tasks
             )
 
-        # Non-streaming case
         final_output = None
         async for request_output in results_generator:
-            if await request.is_disconnected():
-                # Abort the request if the client disconnects.
-                await self.engine.abort(request_id)
-                return Response(status_code=499)
             final_output = request_output
 
         assert final_output is not None
@@ -122,7 +117,8 @@ class VLLMDeployment:
         text_outputs = [
             prompt + output.text for output in final_output.outputs]
         ret = {"text": text_outputs}
-        return Response(content=json.dumps(ret))
+        return json.dumps(ret)
+
 
 @serve.deployment
 class MultiModelDeployment:
