@@ -18,6 +18,8 @@ import json
 import os
 from typing import AsyncGenerator
 
+import random
+
 from fastapi import BackgroundTasks
 from starlette.requests import Request
 from starlette.responses import StreamingResponse, Response
@@ -27,6 +29,7 @@ from vllm.sampling_params import SamplingParams
 from vllm.utils import random_uuid
 
 from ray import serve
+from ray.serve.handle import DeploymentHandle
 
 
 @serve.deployment(name="VLLMDeployment")
