@@ -125,4 +125,5 @@ class VLLMDeployment:
 model = VLLMDeployment.bind(
     model=os.environ['MODEL_ID'],
     tensor_parallel_size=int(os.environ['TENSOR_PARALLELISM']),
+    gpu_memory_utilization=float(os.environ['GPU_MEM_UTIL'])
 )
