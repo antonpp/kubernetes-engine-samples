@@ -37,7 +37,8 @@ kubectl create secret generic hf-secret \
   --dry-run=client -o yaml | kubectl apply -f -
 
 gcloud container clusters create std-rayserve-cluster \
-    --enable-ray-operator --enable-ray-cluster-logging --enable-ray-cluster-monitoring \
+    --addons=RayOperator \
+    --enable-ray-cluster-logging --enable-ray-cluster-monitoring \
     --cluster-version=${CLUSTER_VERSION} \
     --machine-type=g2-standard-24 \
     --location=${COMPUTE_REGION} \
